@@ -10,6 +10,9 @@
 
 @interface BallModel : NSObject
 
+/* Class constructor */
+-(id)initWithX:(float)x Y:(float)y;
+
 /* Properties */
 @property (assign) float xCoord;
 @property (assign) float yCoord;

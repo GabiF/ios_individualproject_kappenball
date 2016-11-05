@@ -115,8 +115,6 @@
 				A036076A1DCE8232000FC206 /* BallModel.m */,
 				A036076C1DCE8414000FC206 /* AppDataModel.h */,
 				A036076D1DCE8414000FC206 /* AppDataModel.m */,
-				E37C97C21DCDA2BD00C50060 /* AppDelegate.h */,
-				E37C97C31DCDA2BD00C50060 /* AppDelegate.m */,
 				E37C97C51DCDA2BD00C50060 /* ViewController.h */,
 				E37C97C61DCDA2BD00C50060 /* ViewController.m */,
 				E37C97C81DCDA2BD00C50060 /* Main.storyboard */,
@@ -133,6 +131,8 @@
 			children = (
 				A03607651DCE7FAB000FC206 /* ball.png */,
 				A03607661DCE7FAB000FC206 /* field.png */,
+				E37C97C21DCDA2BD00C50060 /* AppDelegate.h */,
+				E37C97C31DCDA2BD00C50060 /* AppDelegate.m */,
 				E37C97C01DCDA2BD00C50060 /* main.m */,
 			);
 			name = "Supporting Files";

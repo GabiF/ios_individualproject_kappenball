@@ -10,4 +10,17 @@
 
 @implementation BallModel
 
+/* Class constructor */
+-(id)initWithX:(float)x Y:(float)y
+{
+    self = [super init];
+    if(self)
+    {
+        _xCoord = x;
+        _yCoord = y;
+    }
+    return self;
+}
+
+
 @end

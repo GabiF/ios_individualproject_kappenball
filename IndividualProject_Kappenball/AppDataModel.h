@@ -14,5 +14,6 @@
 @property (assign) int score;
 @property (assign) int avgEnergy;
 @property (assign) int currentEnergy;
+@property (assign) float randomness;
 
 @end

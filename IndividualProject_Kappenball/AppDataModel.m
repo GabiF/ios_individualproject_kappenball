@@ -10,4 +10,18 @@
 
 @implementation AppDataModel
 
+/* Class constructor */
+-(id)init
+{
+    self = [super init];
+    if(self)
+    {
+        _score = 0;
+        _avgEnergy = 0;
+        _currentEnergy = 0;
+        _randomness = 0.0;
+    }
+    return self;
+}
+
 @end
