@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A03607671DCE7FAB000FC206 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607651DCE7FAB000FC206 /* ball.png */; };
+		A03607681DCE7FAB000FC206 /* field.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607661DCE7FAB000FC206 /* field.png */; };
+		A036076B1DCE8232000FC206 /* BallModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076A1DCE8232000FC206 /* BallModel.m */; };
+		A036076E1DCE8414000FC206 /* AppDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076D1DCE8414000FC206 /* AppDataModel.m */; };
 		E37C97C11DCDA2BD00C50060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C01DCDA2BD00C50060 /* main.m */; };
 		E37C97C41DCDA2BD00C50060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C31DCDA2BD00C50060 /* AppDelegate.m */; };
 		E37C97C71DCDA2BD00C50060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C61DCDA2BD00C50060 /* ViewController.m */; };
@@ -35,6 +39,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A03607651DCE7FAB000FC206 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball.png; path = "Supporting Files/ball.png"; sourceTree = "<group>"; };
+		A03607661DCE7FAB000FC206 /* field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = field.png; path = "Supporting Files/field.png"; sourceTree = "<group>"; };
+		A03607691DCE8232000FC206 /* BallModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallModel.h; sourceTree = "<group>"; };
+		A036076A1DCE8232000FC206 /* BallModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallModel.m; sourceTree = "<group>"; };
+		A036076C1DCE8414000FC206 /* AppDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDataModel.h; sourceTree = "<group>"; };
+		A036076D1DCE8414000FC206 /* AppDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDataModel.m; sourceTree = "<group>"; };
 		E37C97BC1DCDA2BD00C50060 /* IndividualProject_Kappenball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IndividualProject_Kappenball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E37C97C01DCDA2BD00C50060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E37C97C21DCDA2BD00C50060 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -101,6 +111,10 @@
 		E37C97BE1DCDA2BD00C50060 /* IndividualProject_Kappenball */ = {
 			isa = PBXGroup;
 			children = (
+				A03607691DCE8232000FC206 /* BallModel.h */,
+				A036076A1DCE8232000FC206 /* BallModel.m */,
+				A036076C1DCE8414000FC206 /* AppDataModel.h */,
+				A036076D1DCE8414000FC206 /* AppDataModel.m */,
 				E37C97C21DCDA2BD00C50060 /* AppDelegate.h */,
 				E37C97C31DCDA2BD00C50060 /* AppDelegate.m */,
 				E37C97C51DCDA2BD00C50060 /* ViewController.h */,
@@ -117,6 +131,8 @@
 		E37C97BF1DCDA2BD00C50060 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A03607651DCE7FAB000FC206 /* ball.png */,
+				A03607661DCE7FAB000FC206 /* field.png */,
 				E37C97C01DCDA2BD00C50060 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -244,7 +260,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E37C97CF1DCDA2BD00C50060 /* LaunchScreen.storyboard in Resources */,
+				A03607681DCE7FAB000FC206 /* field.png in Resources */,
 				E37C97CC1DCDA2BD00C50060 /* Assets.xcassets in Resources */,
+				A03607671DCE7FAB000FC206 /* ball.png in Resources */,
 				E37C97CA1DCDA2BD00C50060 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,8 +288,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A036076E1DCE8414000FC206 /* AppDataModel.m in Sources */,
 				E37C97C71DCDA2BD00C50060 /* ViewController.m in Sources */,
 				E37C97C41DCDA2BD00C50060 /* AppDelegate.m in Sources */,
+				A036076B1DCE8232000FC206 /* BallModel.m in Sources */,
 				E37C97C11DCDA2BD00C50060 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -498,6 +518,7 @@
 				E37C97EB1DCDA2BD00C50060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E37C97EC1DCDA2BD00C50060 /* Build configuration list for PBXNativeTarget "IndividualProject_KappenballTests" */ = {
 			isa = XCConfigurationList;
@@ -506,6 +527,7 @@
 				E37C97EE1DCDA2BD00C50060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E37C97EF1DCDA2BD00C50060 /* Build configuration list for PBXNativeTarget "IndividualProject_KappenballUITests" */ = {
 			isa = XCConfigurationList;
@@ -514,6 +536,7 @@
 				E37C97F11DCDA2BD00C50060 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
