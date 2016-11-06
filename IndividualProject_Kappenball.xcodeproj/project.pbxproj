@@ -111,6 +111,8 @@
 		E37C97BE1DCDA2BD00C50060 /* IndividualProject_Kappenball */ = {
 			isa = PBXGroup;
 			children = (
+				E37C97C21DCDA2BD00C50060 /* AppDelegate.h */,
+				E37C97C31DCDA2BD00C50060 /* AppDelegate.m */,
 				A03607691DCE8232000FC206 /* BallModel.h */,
 				A036076A1DCE8232000FC206 /* BallModel.m */,
 				A036076C1DCE8414000FC206 /* AppDataModel.h */,
@@ -131,8 +133,6 @@
 			children = (
 				A03607651DCE7FAB000FC206 /* ball.png */,
 				A03607661DCE7FAB000FC206 /* field.png */,
-				E37C97C21DCDA2BD00C50060 /* AppDelegate.h */,
-				E37C97C31DCDA2BD00C50060 /* AppDelegate.m */,
 				E37C97C01DCDA2BD00C50060 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -436,9 +436,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = IndividualProject_Kappenball/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-Kappenball";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -447,9 +449,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = IndividualProject_Kappenball/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-Kappenball";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -458,6 +462,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = IndividualProject_KappenballTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-KappenballTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -470,6 +475,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = IndividualProject_KappenballTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-KappenballTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -481,6 +487,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = IndividualProject_KappenballUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-KappenballUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -492,6 +499,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				INFOPLIST_FILE = IndividualProject_KappenballUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "SheffieldUniversity.IndividualProject-KappenballUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";

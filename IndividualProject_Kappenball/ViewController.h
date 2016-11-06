@@ -61,7 +61,7 @@
 
 /* Class methods */
 // Timer methods
-+(NSTimer*)startTimer;
++(void)startTimer:(NSTimer*)target;
 +(void)stopTimer:(NSTimer*)sender;
 
 @end

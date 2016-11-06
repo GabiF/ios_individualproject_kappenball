@@ -31,7 +31,7 @@
     // Move the ball
     
     // Update the interface (labels, slider)
-    [self updateInterface];
+//    [self updateInterface];
 }
 
 // Buttons actions
@@ -39,6 +39,7 @@
 {
     // Initialize all the variables
 }
+
 -(IBAction)pauseBtnPressed
 {
     // Determine what is the status of the pause button ("Pause" or "Resume")
@@ -58,6 +59,7 @@
         [self.pauseBtn setTitle:@"PAUSE" forState:UIControlStateNormal];
     }
 }
+
 -(IBAction)highscoresBtnPressed
 {
     // empty
