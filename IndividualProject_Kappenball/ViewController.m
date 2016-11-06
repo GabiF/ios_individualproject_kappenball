@@ -23,9 +23,18 @@ static const float X_ACCELERATION = 15.0;
 static const float BLOB_WIDTH = 40.0;
 static const float BLOB_HEIGHT = 45.0;
 
+static const float TIMER_MOVEMENT_RATE = 0.02;
+static const float TIMER_ENERGY_RATE = 0.02;
+
 /* Instance methods */
 
-// Initialization method
+/* 
+ @Name: initializeGame
+ @Params:
+ @Return: void
+ @Description: Initialization method. 
+               To be called each time the ball hits a spike / you score a goal
+ */
 -(void)initializeGame
 {
     // Initialize the ball model
@@ -37,10 +46,17 @@ static const float BLOB_HEIGHT = 45.0;
     self.appData.xVelocity = 0.0;
     self.appData.acceleration = 0.0;
 }
-// Reset method
+
+/*
+ @Name: resetGame
+ @Params:
+ @Return: void
+ @Description: Reset game method. 
+               To be called each time the game is reset (RESET button pressed)
+ */
 -(void)resetGame
 {
-    // Game is not running
+    // Reset the flag - Game is not running
     self.gameRunning = NO;
     
     [self initializeGame];
@@ -48,6 +64,24 @@ static const float BLOB_HEIGHT = 45.0;
     self.appData.noOfPlays = 0;
     self.appData.score = 0;
     self.appData.avgEnergy = 0;
+}
+
+// Start game method
+-(void)startGame
+{
+    [self startMovementTimer];
+}
+
+// Game won method
+-(void)wonGame
+{
+    
+}
+
+// Game lost method
+-(void)lostGame
+{
+    
 }
 
 // Slider actions
@@ -60,10 +94,10 @@ static const float BLOB_HEIGHT = 45.0;
 // Buttons actions
 -(IBAction)resetBtnPressed
 {
-    // Stop the timer and wait for the "START" button to be pressed
+    // Stop the movement timer
     [self stopMovementTimer];
     
-    // Initialize all the variables
+    // Reset the used data models + controller variables
     [self resetGame];
     
     // Set the button's title to "START"
@@ -72,23 +106,24 @@ static const float BLOB_HEIGHT = 45.0;
 
 -(IBAction)pauseBtnPressed
 {
-    // Determine if the pause button is in its initial state ("Start")
+    // Determine if the pause button is in its initial/reset state ("Start")
     if([self.pauseBtn.currentTitle compare:@"START"] == NSOrderedSame)
     {
-        // Game is running
+        // Set the flag - Game is running
         self.gameRunning = YES;
         
         // Start the game
-        [self startMovementTimer];
+        [self startGame];
         
         // Set the button's title to "PAUSE"
         [self.pauseBtn setTitle:@"PAUSE" forState:UIControlStateNormal];
     }
     else
-    {
+    {   // Pause button NOT in "Start" state
         // Determine what is the status of the pause button ("Pause" or "Resume")
         if([self.pauseBtn.currentTitle compare:@"PAUSE"] == NSOrderedSame)
         {
+            // Pause button in "PAUSE" state
             // Freeze the timer
             [self stopMovementTimer];
             
@@ -97,6 +132,7 @@ static const float BLOB_HEIGHT = 45.0;
         }
         else
         {
+            // Pause button in "RESUME" state
             // Restart the timer
             [self startMovementTimer];
             
@@ -118,7 +154,7 @@ static const float BLOB_HEIGHT = 45.0;
 {
     if(!(self.movementTimer.isValid))
     {
-        self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(moveBall) userInfo:nil repeats:YES];
+        self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_MOVEMENT_RATE target:self selector:@selector(moveBall) userInfo:nil repeats:YES];
     }
 }
 // GABI: method could be improved
@@ -132,7 +168,7 @@ static const float BLOB_HEIGHT = 45.0;
 {
     if(!(self.energyTimer.isValid))
     {
-        self.energyTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(incrementEnergy) userInfo:nil repeats:YES];
+        self.energyTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_ENERGY_RATE target:self selector:@selector(incrementEnergy) userInfo:nil repeats:YES];
     }
 }
 // GABI: method could be improved
@@ -156,7 +192,7 @@ static const float BLOB_HEIGHT = 45.0;
     // NOTE: So here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
     
     // Calculate the new x and new y
-    // determine the new random behaviour on x-axis (rand in [-50.0,50.0]
+    // determine the new random behaviour on x-axis (rand in [-50.0,50.0])
     float rand = (arc4random() % 101) - 50.0;
     // determine new x-axis velocity
     float newXVelocity = self.appData.xVelocity * DECAY + self.appData.acceleration + self.appData.randomness * rand;
@@ -166,15 +202,16 @@ static const float BLOB_HEIGHT = 45.0;
     float newY = self.ball.yCoord + Y_VELOCITY;
     
     // Determine if the new coordinates of the ball mean ball interacts with background: walls, spikes, holes
-    if(newY < self.viewCenter.frame.size.height)
+    
+    // create a new rectangle that represents the next position of the ball imageview
+    CGRect newBallRect = CGRectMake(newX, newY, self.ballImageView.frame.size.width, self.ballImageView.frame.size.height);
+    // verify if the potential new position of the ball would interact with walls, spikes or holes
+    
+    // check if any of the goals is reached
+    if(CGRectIntersectsRect(newBallRect, self.viewGoalLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewGoalRight.frame))
     {
-        // well these values I have to get empirically, by trial-and-error. cause we don't know the exact coordinates of spikes, walls, holes
-        // but I'll just make it go down until it reaches the bottom of the view, and then reset
-        self.ball.xCoord = newX;
-        self.ball.yCoord = newY;
-    }
-    else
-    {   // GAME WON
+        // - Ball reached one of the goals
+        // GAME WON
         // Increment the score
         self.appData.score = self.appData.score + 1;
         // Update total energy, number of games played
@@ -186,7 +223,43 @@ static const float BLOB_HEIGHT = 45.0;
         // Initialize the game
         [self initializeGame];
     }
-    
+    else
+    {
+        // check if left wall is hit
+        if(CGRectIntersectsRect(newBallRect, self.viewWallLeft.frame))
+        {
+            // - Ball hit the left wall
+            // Ball bounces back, changing direction to the right
+            
+        }
+        else
+        {
+            // check if right wall is hit
+            if(CGRectIntersectsRect(newBallRect, self.viewWallRight.frame))
+            {
+                // - Ball hit the right wall
+                // Ball bounces back, changing direction to the left
+                
+            }
+            else
+            {
+                // check if any of the spikes are hit
+                if(CGRectIntersectsRect(newBallRect, self.viewSpikesLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesCenter.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesRight.frame))
+                {
+                    // - Ball hit the spikes
+                    // GAME LOST
+                    
+                }
+                else
+                {
+                    // - Ball is moving in the free-movement area of the field
+                    //Just change the position of the ball
+                    self.ball.xCoord = newX;
+                    self.ball.yCoord = newY;
+                }
+            }
+        }
+    }    
 }
 
 // NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call ** //TODO: delete this comment

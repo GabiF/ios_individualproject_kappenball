@@ -16,6 +16,15 @@
 // Define a flag to check if game is running
 @property (assign) BOOL gameRunning;
 
+// Define the background image views (tiles)
+@property (weak) IBOutlet UIView* viewWallLeft;
+@property (weak) IBOutlet UIView* viewWallRight;
+@property (weak) IBOutlet UIView* viewSpikesLeft;
+@property (weak) IBOutlet UIView* viewSpikesCenter;
+@property (weak) IBOutlet UIView* viewSpikesRight;
+@property (weak) IBOutlet UIView* viewGoalLeft;
+@property (weak) IBOutlet UIView* viewGoalRight;
+
 // Define the timer objects
 @property (strong) NSTimer* movementTimer;
 @property (strong) NSTimer* energyTimer;
@@ -67,6 +76,21 @@
 
 // Reset method
 -(void)resetGame;
+
+// Start game method
+-(void)startGame;
+
+// Game won method
+-(void)wonGame;
+
+// Game lost method
+-(void)lostGame;
+
+// Increment energy
+-(void)incrementEnergy;
+
+// Calculate average energy method
+-(void)calculateAvgEnergy;
 
 // Ball movement method
 -(void)moveBall;
