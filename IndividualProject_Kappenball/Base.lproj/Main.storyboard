@@ -13,14 +13,10 @@
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="736" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fgk-i3-Q4O">
-                                <rect key="frame" x="0.0" y="69" width="736" height="275"/>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="j0P-R7-oP0">
                                 <rect key="frame" x="0.0" y="344" width="736" height="70"/>
                                 <subviews>
@@ -29,13 +25,19 @@
                                         <color key="backgroundColor" red="0.70855034719999999" green="0.065591979100000003" blue="0.041687808100000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <color key="tintColor" red="0.70855034719999999" green="0.16304994889999999" blue="0.16700062139999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <state key="normal" title="PAUSE">
+                                        <state key="normal" title="START">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="pauseBtnPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="6QT-mP-5Y1"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="RANDOMNESS:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WeY-Y3-ig0">
+                                        <rect key="frame" x="167" y="25" width="130" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="khN-Mt-83r">
                                         <rect key="frame" x="293" y="19" width="275" height="31"/>
                                         <connections>
@@ -54,12 +56,6 @@
                                             <action selector="resetBtnPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="ahC-q1-Nwj"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="RANDOMNESS:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WeY-Y3-ig0">
-                                        <rect key="frame" x="167" y="25" width="130" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -117,16 +113,23 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fgk-i3-Q4O">
+                                <rect key="frame" x="0.0" y="69" width="736" height="275"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
                     <connections>
+                        <outlet property="avgEnergyLabel" destination="bDz-c2-I37" id="l5s-xG-lpa"/>
+                        <outlet property="currEnergyLabel" destination="ffI-th-M1y" id="Mwq-Dd-s7u"/>
                         <outlet property="highscoresBtn" destination="NNq-he-7hX" id="FxL-L0-C85"/>
                         <outlet property="pauseBtn" destination="qmR-s2-Sdr" id="yfq-lC-uEs"/>
                         <outlet property="randSlider" destination="khN-Mt-83r" id="u9p-72-H43"/>
                         <outlet property="resetBtn" destination="guk-PH-xQz" id="ws9-hz-bTb"/>
+                        <outlet property="scoreLabel" destination="jUZ-ep-bXU" id="F6A-3y-bfu"/>
                         <outlet property="viewBottom" destination="j0P-R7-oP0" id="o0Z-MH-uJj"/>
                         <outlet property="viewCenter" destination="Fgk-i3-Q4O" id="BHD-V2-ztl"/>
                         <outlet property="viewTop" destination="Fen-Ax-Dtl" id="MZh-UG-byQ"/>

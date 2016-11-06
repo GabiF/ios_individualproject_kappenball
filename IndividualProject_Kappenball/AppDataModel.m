@@ -19,6 +19,8 @@
         _score = 0;
         _avgEnergy = 0;
         _currentEnergy = 0;
+        _xVelocity = 0.0;
+        _acceleration = 0.0;
         _randomness = 0.0;
     }
     return self;

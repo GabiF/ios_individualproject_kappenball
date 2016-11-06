@@ -12,23 +12,23 @@
 
 @interface ViewController : UIViewController
 
-
 /* Properties */
 
-
-// define the timer object
+// Define the timer object
 @property (strong) NSTimer* movementTimer;
 
-// define the model objects
+// Define the model objects
 @property (strong) BallModel* ball;
 @property (strong) AppDataModel* appData;
 
-// define the storyboard objects to be interacted with
-
+// Define the storyboard objects to be interacted with
 // view objects
 @property (weak) IBOutlet UIView* viewTop;
 @property (weak) IBOutlet UIView* viewCenter;
 @property (weak) IBOutlet UIView* viewBottom;
+
+// define the blob object
+@property (strong) UIImageView* blobImageView;
 
 // imageview objects
 @property (strong) UIImageView* backgroundImageView;
@@ -62,9 +62,6 @@
 
 // Ball movement method
 -(void)moveBall;
-
-// Interface update method
--(void)updateInterface;
 
 @end
 

@@ -11,6 +11,7 @@
 		A03607681DCE7FAB000FC206 /* field.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607661DCE7FAB000FC206 /* field.png */; };
 		A036076B1DCE8232000FC206 /* BallModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076A1DCE8232000FC206 /* BallModel.m */; };
 		A036076E1DCE8414000FC206 /* AppDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076D1DCE8414000FC206 /* AppDataModel.m */; };
+		A076D5C81DCEF31500FC02E1 /* blob.png in Resources */ = {isa = PBXBuildFile; fileRef = A076D5C71DCEF31500FC02E1 /* blob.png */; };
 		E37C97C11DCDA2BD00C50060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C01DCDA2BD00C50060 /* main.m */; };
 		E37C97C41DCDA2BD00C50060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C31DCDA2BD00C50060 /* AppDelegate.m */; };
 		E37C97C71DCDA2BD00C50060 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C61DCDA2BD00C50060 /* ViewController.m */; };
@@ -45,6 +46,7 @@
 		A036076A1DCE8232000FC206 /* BallModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallModel.m; sourceTree = "<group>"; };
 		A036076C1DCE8414000FC206 /* AppDataModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDataModel.h; sourceTree = "<group>"; };
 		A036076D1DCE8414000FC206 /* AppDataModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDataModel.m; sourceTree = "<group>"; };
+		A076D5C71DCEF31500FC02E1 /* blob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blob.png; path = "Supporting Files/blob.png"; sourceTree = "<group>"; };
 		E37C97BC1DCDA2BD00C50060 /* IndividualProject_Kappenball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IndividualProject_Kappenball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E37C97C01DCDA2BD00C50060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E37C97C21DCDA2BD00C50060 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		E37C97BF1DCDA2BD00C50060 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A076D5C71DCEF31500FC02E1 /* blob.png */,
 				A03607651DCE7FAB000FC206 /* ball.png */,
 				A03607661DCE7FAB000FC206 /* field.png */,
 				E37C97C01DCDA2BD00C50060 /* main.m */,
@@ -261,6 +264,7 @@
 			files = (
 				E37C97CF1DCDA2BD00C50060 /* LaunchScreen.storyboard in Resources */,
 				A03607681DCE7FAB000FC206 /* field.png in Resources */,
+				A076D5C81DCEF31500FC02E1 /* blob.png in Resources */,
 				E37C97CC1DCDA2BD00C50060 /* Assets.xcassets in Resources */,
 				A03607671DCE7FAB000FC206 /* ball.png in Resources */,
 				E37C97CA1DCDA2BD00C50060 /* Main.storyboard in Resources */,
