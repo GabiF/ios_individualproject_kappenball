@@ -16,6 +16,8 @@
     self = [super init];
     if(self)
     {
+        _noOfPlays = 0;
+        _totalEnergy = 0;
         _score = 0;
         _avgEnergy = 0;
         _currentEnergy = 0;

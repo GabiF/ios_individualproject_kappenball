@@ -13,9 +13,12 @@
 @interface ViewController : UIViewController
 
 /* Properties */
+// Define a flag to check if game is running
+@property (assign) BOOL gameRunning;
 
-// Define the timer object
+// Define the timer objects
 @property (strong) NSTimer* movementTimer;
+@property (strong) NSTimer* energyTimer;
 
 // Define the model objects
 @property (strong) BallModel* ball;
@@ -56,9 +59,14 @@
 // Timer methods
 -(void)startMovementTimer;
 -(void)stopMovementTimer;
+-(void)startEnergyTimer;
+-(void)stopEnergyTimer;
 
 // Initialization method
--(void)initializeVariables;
+-(void)initializeGame;
+
+// Reset method
+-(void)resetGame;
 
 // Ball movement method
 -(void)moveBall;

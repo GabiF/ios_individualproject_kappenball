@@ -18,11 +18,37 @@
 static const float DT = 0.1;
 static const float DECAY = 0.95;
 static const float Y_VELOCITY = 0.75;
+static const float X_ACCELERATION = 15.0;
 
 static const float BLOB_WIDTH = 40.0;
 static const float BLOB_HEIGHT = 45.0;
 
 /* Instance methods */
+
+// Initialization method
+-(void)initializeGame
+{
+    // Initialize the ball model
+    self.ball.xCoord = self.viewCenter.frame.size.width / 2.0;
+    self.ball.yCoord = 0.0;
+    
+    // Initialize the appData model
+    self.appData.currentEnergy = 0;
+    self.appData.xVelocity = 0.0;
+    self.appData.acceleration = 0.0;
+}
+// Reset method
+-(void)resetGame
+{
+    // Game is not running
+    self.gameRunning = NO;
+    
+    [self initializeGame];
+    self.appData.totalEnergy = 0;
+    self.appData.noOfPlays = 0;
+    self.appData.score = 0;
+    self.appData.avgEnergy = 0;
+}
 
 // Slider actions
 -(IBAction)randSliderChanged
@@ -38,7 +64,7 @@ static const float BLOB_HEIGHT = 45.0;
     [self stopMovementTimer];
     
     // Initialize all the variables
-    [self initializeVariables];
+    [self resetGame];
     
     // Set the button's title to "START"
     [self.pauseBtn setTitle:@"START" forState:UIControlStateNormal];
@@ -49,6 +75,9 @@ static const float BLOB_HEIGHT = 45.0;
     // Determine if the pause button is in its initial state ("Start")
     if([self.pauseBtn.currentTitle compare:@"START"] == NSOrderedSame)
     {
+        // Game is running
+        self.gameRunning = YES;
+        
         // Start the game
         [self startMovementTimer];
         
@@ -77,12 +106,14 @@ static const float BLOB_HEIGHT = 45.0;
     }
 }
 
+// GABI: method to be implemented
 -(IBAction)highscoresBtnPressed
 {
     // empty
 }
 
-// Timer methods
+// Timer methods (could be reduced to just two generic methods)
+// GABI: method could be improved
 -(void)startMovementTimer
 {
     if(!(self.movementTimer.isValid))
@@ -90,25 +121,34 @@ static const float BLOB_HEIGHT = 45.0;
         self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(moveBall) userInfo:nil repeats:YES];
     }
 }
-
+// GABI: method could be improved
 -(void)stopMovementTimer
 {
     [self.movementTimer invalidate];
 }
 
-// Initialization method
--(void)initializeVariables
+// GABI: method could be improved
+-(void)startEnergyTimer
 {
-    // Initialize the ball model
-    self.ball.xCoord = self.viewCenter.frame.size.width / 2.0;
-    self.ball.yCoord = 0.0;
-    
-    // Initialize the appData model
-    self.appData.score = 0;
-    self.appData.avgEnergy = 0;
-    self.appData.currentEnergy = 0;
-    self.appData.xVelocity = 0.0;
-    self.appData.acceleration = 0.0;
+    if(!(self.energyTimer.isValid))
+    {
+        self.energyTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(incrementEnergy) userInfo:nil repeats:YES];
+    }
+}
+// GABI: method could be improved
+-(void)stopEnergyTimer
+{
+    [self.energyTimer invalidate];
+}
+
+-(void)incrementEnergy
+{
+    self.appData.currentEnergy = self.appData.currentEnergy + 1;
+}
+
+-(void)calculateAvgEnergy
+{
+    self.appData.avgEnergy = self.appData.totalEnergy / self.appData.noOfPlays;
 }
 
 -(void)moveBall
@@ -116,8 +156,8 @@ static const float BLOB_HEIGHT = 45.0;
     // NOTE: So here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
     
     // Calculate the new x and new y
-    // determine the new random behaviour on x-axis
-    float rand = (arc4random() % 41) - 20.0;
+    // determine the new random behaviour on x-axis (rand in [-50.0,50.0]
+    float rand = (arc4random() % 101) - 50.0;
     // determine new x-axis velocity
     float newXVelocity = self.appData.xVelocity * DECAY + self.appData.acceleration + self.appData.randomness * rand;
     // calculate new x
@@ -134,66 +174,22 @@ static const float BLOB_HEIGHT = 45.0;
         self.ball.yCoord = newY;
     }
     else
-    {
-        [self initializeVariables];
+    {   // GAME WON
+        // Increment the score
+        self.appData.score = self.appData.score + 1;
+        // Update total energy, number of games played
+        self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
+        self.appData.noOfPlays = self.appData.noOfPlays + 1;
+        // Calculate average energy
+        [self calculateAvgEnergy];
+        
+        // Initialize the game
+        [self initializeGame];
     }
     
 }
 
--(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
-{
-    UITouch* touch = [touches anyObject];
-    
-    if([[touch view] isEqual:self.viewCenter])
-    {
-        CGPoint touchPoint = [touch locationInView:self.viewCenter];
-        
-        // Show the blob at the current touch point
-        self.blobImageView.center = touchPoint;
-        self.blobImageView.alpha = 0.8;
-        
-        // Determine the position of the touch w.r.t. the current position of the ball
-        CGPoint ballCenter = CGPointMake(self.ball.xCoord, self.ball.yCoord);
-        
-        if(touchPoint.x < ballCenter.x)
-        {
-            // The touch was on the LHS of the ball
-            self.appData.acceleration = 5.0;
-        }
-        else
-        {
-            // The touch was on the RHS of the ball
-            self.appData.acceleration = -5.0;
-        }
-        
-        // Determine the used energy
-    }
-}
-
--(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    UITouch* touch = [touches anyObject];
-    
-    if([[touch view] isEqual:self.viewCenter])
-    {
-        CGPoint touchPoint = [touch locationInView:self.viewCenter];
-        // Move the position of the blob to the current touch point
-        self.blobImageView.center = touchPoint;
-    }
-}
-
--(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    // Hide the blob
-    self.blobImageView.alpha = 0.0;
-    
-    // Acceleration is 0 as there is no more touch on the screen
-    self.appData.acceleration = 0.0;
-    
-    // Do something with the determined used energy
-}
-
-// so this is the method that says "Look at x and y and see if they change". if they do, call ** //TODO: delete this comment
+// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call ** //TODO: delete this comment
 -(void)connectBallModel:(BallModel*)ball
 {
     [ball addObserver:self forKeyPath:@"xCoord" options:NSKeyValueObservingOptionNew context:nil];
@@ -207,10 +203,10 @@ static const float BLOB_HEIGHT = 45.0;
     [appData addObserver:self forKeyPath:@"currentEnergy" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-// ** this method automatically
+// ** this method is called automatically
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-    // and here is where I do the visual updates on the view
+    // NOTE: and here is where I do the visual updates on the view
     // it's like a communication:
     /*
      C -> M: make this changes
@@ -242,6 +238,73 @@ static const float BLOB_HEIGHT = 45.0;
     {
         // If yes, then update the value in the current energy label
         self.currEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.currentEnergy];
+    }
+}
+
+-(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
+{
+    // Interpret the touches only if the game is running
+    if(self.gameRunning)
+    {
+        UITouch* touch = [touches anyObject];
+        
+        if([[touch view] isEqual:self.viewCenter])
+        {
+            CGPoint touchPoint = [touch locationInView:self.viewCenter];
+            
+            // Show the blob at the current touch point
+            self.blobImageView.center = touchPoint;
+            self.blobImageView.alpha = 0.8;
+            
+            // Determine the position of the touch w.r.t. the current position of the ball
+            CGPoint ballCenter = CGPointMake(self.ball.xCoord, self.ball.yCoord);
+            
+            if(touchPoint.x < ballCenter.x)
+            {
+                // The touch was on the LHS of the ball
+                self.appData.acceleration = X_ACCELERATION;
+            }
+            else
+            {
+                // The touch was on the RHS of the ball
+                self.appData.acceleration = -X_ACCELERATION;
+            }
+            
+            // Set up a timer to increment the current energy used
+            [self startEnergyTimer];
+        }
+    }
+}
+
+-(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    // Interpret the touches only if the game is running
+    if(self.gameRunning)
+    {
+        UITouch* touch = [touches anyObject];
+        
+        if([[touch view] isEqual:self.viewCenter])
+        {
+            CGPoint touchPoint = [touch locationInView:self.viewCenter];
+            // Move the position of the blob to the current touch point
+            self.blobImageView.center = touchPoint;
+        }
+    }
+}
+
+-(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    // Interpret the touches only if the game is running
+    if(self.gameRunning)
+    {
+        // Hide the blob
+        self.blobImageView.alpha = 0.0;
+        
+        // Acceleration is 0 as there is no more touch on the screen
+        self.appData.acceleration = 0.0;
+        
+        // Stop the timer which increments the current energy used
+        [self stopEnergyTimer];
     }
 }
 
@@ -281,11 +344,15 @@ static const float BLOB_HEIGHT = 45.0;
     self.blobImageView = blob;
     [self.viewCenter addSubview:self.blobImageView];
     
-    // Initialize all models variables
-    [self initializeVariables];
+    [self resetGame];
     
     // Set the default value for the slider to be 0.0
-    self.randSlider.value = 0.0;
+    self.randSlider.value = self.appData.randomness;
+    
+    // Set the default value for the labels to 0
+//    self.scoreLabel.text = [NSString stringWithFormat:@"%d",self.appData.score];
+//    self.avgEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.avgEnergy];
+//    self.currEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.currentEnergy];
     
     // start the timer
 //    self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(moveBall) userInfo:nil repeats:YES]; //TODO: remove this part of code

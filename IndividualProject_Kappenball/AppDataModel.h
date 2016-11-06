@@ -11,6 +11,9 @@
 @interface AppDataModel : NSObject
 
 /* Properties */
+@property (assign) int noOfPlays;
+@property (assign) int totalEnergy;
+
 @property (assign) int score;
 @property (assign) int avgEnergy;
 @property (assign) int currentEnergy;
