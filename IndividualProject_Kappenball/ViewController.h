@@ -12,15 +12,16 @@
 
 @interface ViewController : UIViewController
 
+
 /* Properties */
+
+
 // define the timer object
 @property (strong) NSTimer* movementTimer;
 
 // define the model objects
 @property (strong) BallModel* ball;
 @property (strong) AppDataModel* appData;
-
-
 
 // define the storyboard objects to be interacted with
 
@@ -32,7 +33,6 @@
 // imageview objects
 @property (strong) UIImageView* backgroundImageView;
 @property (strong) UIImageView* ballImageView;
-
 
 @property (weak) IBOutlet UILabel* scoreLabel;
 @property (weak) IBOutlet UILabel* avgEnergyLabel;
@@ -53,16 +53,18 @@
 -(IBAction)pauseBtnPressed;
 -(IBAction)highscoresBtnPressed;
 
+// Timer methods
+-(void)startMovementTimer;
+-(void)stopMovementTimer;
+
 // Initialization method
 -(void)initializeVariables;
 
+// Ball movement method
+-(void)moveBall;
+
 // Interface update method
 -(void)updateInterface;
-
-/* Class methods */
-// Timer methods
-+(void)startTimer:(NSTimer*)target;
-+(void)stopTimer:(NSTimer*)sender;
 
 @end
 
