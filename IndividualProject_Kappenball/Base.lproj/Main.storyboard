@@ -59,7 +59,7 @@
                                 <rect key="frame" x="0.0" y="360" width="736" height="54"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qmR-s2-Sdr">
-                                        <rect key="frame" x="17" y="7" width="130" height="36"/>
+                                        <rect key="frame" x="17" y="9" width="110" height="36"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -70,23 +70,26 @@
                                             <action selector="pauseBtnPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="6QT-mP-5Y1"/>
                                         </connections>
                                     </button>
-                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="glY-cW-5Zd">
-                                        <rect key="frame" x="197" y="11" width="51" height="31"/>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="glY-cW-5Zd">
+                                        <rect key="frame" x="150" y="12" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="gameSwitchChanged" destination="BYZ-38-t0r" eventType="valueChanged" id="ZZj-Pw-ECu"/>
+                                        </connections>
                                     </switch>
-                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="RANDOMNESS:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WeY-Y3-ig0">
-                                        <rect key="frame" x="169" y="15" width="120" height="20"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="diff" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AvQ-3Y-8qz">
+                                        <rect key="frame" x="313" y="17" width="30" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="khN-Mt-83r">
-                                        <rect key="frame" x="293" y="11" width="275" height="31"/>
+                                        <rect key="frame" x="355" y="11" width="237" height="31"/>
                                         <connections>
                                             <action selector="randSliderChanged" destination="BYZ-38-t0r" eventType="valueChanged" id="azj-0k-xuF"/>
                                         </connections>
                                     </slider>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="guk-PH-xQz">
-                                        <rect key="frame" x="592" y="7" width="130" height="36"/>
+                                        <rect key="frame" x="612" y="9" width="110" height="36"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -97,6 +100,12 @@
                                             <action selector="resetBtnPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="ahC-q1-Nwj"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="DIFFICULTY:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t93-k7-rgr">
+                                        <rect key="frame" x="216" y="17" width="111" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -123,7 +132,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="aveng" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDz-c2-I37">
-                                        <rect key="frame" x="448" y="17" width="60" height="20"/>
+                                        <rect key="frame" x="448" y="17" width="50" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -135,7 +144,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="score" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jUZ-ep-bXU">
-                                        <rect key="frame" x="238" y="17" width="60" height="20"/>
+                                        <rect key="frame" x="238" y="17" width="50" height="20"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -213,6 +222,7 @@
                     <connections>
                         <outlet property="avgEnergyLabel" destination="bDz-c2-I37" id="l5s-xG-lpa"/>
                         <outlet property="currEnergyLabel" destination="ffI-th-M1y" id="Mwq-Dd-s7u"/>
+                        <outlet property="difficultyLabel" destination="AvQ-3Y-8qz" id="jpi-Tt-pEI"/>
                         <outlet property="gameSwitch" destination="glY-cW-5Zd" id="var-B4-lCR"/>
                         <outlet property="highscoresBtn" destination="NNq-he-7hX" id="FxL-L0-C85"/>
                         <outlet property="pauseBtn" destination="qmR-s2-Sdr" id="yfq-lC-uEs"/>

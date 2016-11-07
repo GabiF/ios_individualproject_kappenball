@@ -14,17 +14,32 @@
 
 @implementation ViewController
 
+/***  ***/
+
 /*** Class constants ***/
 
 // Movement constants
 static const float DT = 0.1;
 static const float DECAY = 0.95;
-static const float Y_VELOCITY = 0.75;
 static const float X_ACCELERATION = 1.3;
 
+static const float Y_VELOCITY_DIFFICULTY_0 = 1.0;
+static const float Y_VELOCITY_DIFFICULTY_1 = 1.2;
+static const float Y_VELOCITY_DIFFICULTY_2 = 1.5;
+static const float Y_VELOCITY_DIFFICULTY_3 = 2.0;
+static const float Y_VELOCITY_DIFFICULTY_4 = 2.7;
+static const float Y_VELOCITY_DIFFICULTY_5 = 3.5;
+
+static const float SCORE_THRESHOLD_DIFFICULTY_0 = 0;
+static const float SCORE_THRESHOLD_DIFFICULTY_1 = 1;
+static const float SCORE_THRESHOLD_DIFFICULTY_2 = 5;
+static const float SCORE_THRESHOLD_DIFFICULTY_3 = 10;
+static const float SCORE_THRESHOLD_DIFFICULTY_4 = 15;
+static const float SCORE_THRESHOLD_DIFFICULTY_5 = 30;
+
 // Blob dimensions constants
-static const float BLOB_WIDTH = 28.0;
-static const float BLOB_HEIGHT = 28.0;
+static const float BLOB_WIDTH = 30.0;
+static const float BLOB_HEIGHT = 30.0;
 
 // Timers constants
 static const float TIMER_MOVEMENT_RATE = 0.02;
@@ -51,7 +66,7 @@ To be called in appDidLoad method, after all initializations
     [self.randSlider setThumbImage:sliderImag forState:UIControlStateNormal];
     // set the new track tint colours
     [self.randSlider setMinimumTrackTintColor:[UIColor redColor]];
-    // set the default value for the slider to be 0.0
+    // set the initial value for the slider
     self.randSlider.value = self.appData.randomness;
     
     // Configure the switch
@@ -69,6 +84,27 @@ To be called in appDidLoad method, after all initializations
 {
     // This will make the application run by default in landscape mode
     return UIInterfaceOrientationLandscapeLeft;
+}
+
+/* Switch actions */
+
+/*
+ @Name: gameSwitchChanged
+ @Params:
+ @Return:
+ @Description: DIFFICULTY switch changed method.
+ To be set as the switchChanged ACTION of the randomness slider
+ */
+-(IBAction)gameSwitchChanged
+{
+    if(self.gameSwitch.isOn == YES)
+    {
+        self.appData.makeGameDifficult = YES;
+    }
+    else
+    {
+        self.appData.makeGameDifficult = NO;
+    }
 }
 
 /* Slider actions */
@@ -208,10 +244,12 @@ To be called in appDidLoad method, after all initializations
     self.gameRunning = NO;
     
     [self initializeGame];
+    self.appData.score = 0;
     self.appData.totalEnergy = 0;
     self.appData.noOfPlays = 0;
-    self.appData.score = 0;
     self.appData.avgEnergy = 0;
+    
+    self.appData.gameDifficulty = GameDifficultyLevel0;
 }
 
 /* Game outcomes methods */
@@ -240,6 +278,12 @@ To be called in appDidLoad method, after all initializations
 {
     // Increment the score
     self.appData.score = self.appData.score + 1;
+    // Check if the game difficulty is set
+    if(self.appData.makeGameDifficult == YES)
+    {
+        // Determine the difficulty level of the next round
+        [self determineGameDifficulty];
+    }
     
     // Calculate average energy
     [self calculateAvgEnergy];
@@ -267,6 +311,43 @@ To be called in appDidLoad method, after all initializations
     [self startBallAnimation];
 }
 
+/*
+ @Name: determineGameDifficulty
+ @Params:
+ @Return:
+ @Description: Determine game difficulty method.
+ To be called in the wonGame method, after updating the score
+ */
+-(void)determineGameDifficulty
+{
+    int score = self.appData.score;
+    
+    if(score >= SCORE_THRESHOLD_DIFFICULTY_0  && score < SCORE_THRESHOLD_DIFFICULTY_1)
+    {
+        self.appData.gameDifficulty = GameDifficultyLevel0;
+    }
+    else if(score >= SCORE_THRESHOLD_DIFFICULTY_1 && score < SCORE_THRESHOLD_DIFFICULTY_2)
+        {
+            self.appData.gameDifficulty = GameDifficultyLevel1;
+        }
+        else if(score >= SCORE_THRESHOLD_DIFFICULTY_2 && score < SCORE_THRESHOLD_DIFFICULTY_3)
+            {
+                self.appData.gameDifficulty = GameDifficultyLevel2;
+            }
+            else if(score >= SCORE_THRESHOLD_DIFFICULTY_3 && score < SCORE_THRESHOLD_DIFFICULTY_4)
+                {
+                    self.appData.gameDifficulty = GameDifficultyLevel3;
+                }
+                else if(score >= SCORE_THRESHOLD_DIFFICULTY_4 && score < SCORE_THRESHOLD_DIFFICULTY_5)
+                    {
+                        self.appData.gameDifficulty = GameDifficultyLevel4;
+                    }
+                    else
+                    {
+                        self.appData.gameDifficulty = GameDifficultyLevel5;
+                    }
+}
+
 /* Ball-related methods */
 
 /*
@@ -279,7 +360,7 @@ To be called in appDidLoad method, after all initializations
 -(void)startBallAnimation
 {
     // Set animation duration
-    [self.ballImageView setAnimationDuration:0.8];
+    [self.ballImageView setAnimationDuration:0.4];
     // Set animation no of repetitions
     [self.ballImageView setAnimationRepeatCount:1];
     // Start the animation
@@ -333,10 +414,29 @@ To be called in appDidLoad method, after all initializations
     
     // calculate new x
     float newX = self.ball.xCoord + self.appData.xVelocity * DT;
-    // calculate new y
-    float newY = self.ball.yCoord + Y_VELOCITY;
+    float newY;
     
-    // Create a new rectangle that represents the next position of the ball imageview
+    if(self.appData.makeGameDifficult == NO)
+    {
+        // calculate new y with game difficulty OFF
+        newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_0;
+    }
+    else
+    {
+        switch(self.appData.gameDifficulty)
+        {
+            case GameDifficultyLevel0: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_0; break;
+            case GameDifficultyLevel1: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_1; break;
+            case GameDifficultyLevel2: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_2; break;
+            case GameDifficultyLevel3: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_3; break;
+            case GameDifficultyLevel4: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_4; break;
+            case GameDifficultyLevel5: newY = self.ball.yCoord + Y_VELOCITY_DIFFICULTY_5; break;
+            default: break;
+        }
+        
+    }
+    
+    // Create a new rectangle that represents the next position of the ball (ballimageview)
     CGRect newBallRect = CGRectMake(newX-(self.ballImageView.frame.size.width/2), newY-(self.ballImageView.frame.size.height/2), self.ballImageView.frame.size.width, self.ballImageView.frame.size.height);
     
     // Verify if the potential new position of the ball would interact with walls, spikes or goals
@@ -480,6 +580,7 @@ To be called in appDidLoad method, after all initializations
     [appData addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:nil];
     [appData addObserver:self forKeyPath:@"avgEnergy" options:NSKeyValueObservingOptionNew context:nil];
     [appData addObserver:self forKeyPath:@"currentEnergy" options:NSKeyValueObservingOptionNew context:nil];
+    [appData addObserver:self forKeyPath:@"gameDifficulty" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 /* ViewController observer method */
@@ -518,6 +619,11 @@ To be called in appDidLoad method, after all initializations
     {
         // If yes, then update the value in the current energy label
         self.currEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.currentEnergy];
+    }
+    if([keyPath compare:@"gameDifficulty"] == NSOrderedSame)
+    {
+        // If yes, then update the value in the game difficulty label
+        self.difficultyLabel.text = [NSString stringWithFormat:@"%d",(int)self.appData.gameDifficulty];
     }
 }
 

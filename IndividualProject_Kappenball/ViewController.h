@@ -58,6 +58,7 @@
 @property (weak) IBOutlet UILabel* scoreLabel;
 @property (weak) IBOutlet UILabel* avgEnergyLabel;
 @property (weak) IBOutlet UILabel* currEnergyLabel;
+@property (weak) IBOutlet UILabel* difficultyLabel;
 
 // Switch
 @property (weak) IBOutlet UISwitch* gameSwitch;
@@ -73,6 +74,9 @@
 /*** Instance methods ***/
 // Configure UI Elements
 -(void)configureUIElements;
+
+// Switch actions
+-(IBAction)gameSwitchChanged;
 
 // Slider actions
 -(IBAction)randSliderChanged;
@@ -101,8 +105,10 @@
 -(void)wonGame;
 // Game lost method
 -(void)lostGame;
+// Determine game difficulty method
+-(void)determineGameDifficulty;
 
-// Increment energy
+// Increment energy method
 -(void)incrementEnergy;
 // Calculate average energy method
 -(void)calculateAvgEnergy;

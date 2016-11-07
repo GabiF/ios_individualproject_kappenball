@@ -24,6 +24,8 @@
         _xVelocity = 0.0;
         _acceleration = 0.0;
         _randomness = 0.0;
+        _makeGameDifficult = NO;
+        _gameDifficulty = GameDifficultyLevel0;
     }
     return self;
 }
