@@ -18,15 +18,37 @@
 static const float DT = 0.1;
 static const float DECAY = 0.95;
 static const float Y_VELOCITY = 0.75;
-static const float X_ACCELERATION = 15.0;
+static const float X_ACCELERATION = 1.3;
 
-static const float BLOB_WIDTH = 40.0;
-static const float BLOB_HEIGHT = 45.0;
+static const float BLOB_WIDTH = 28.0;
+static const float BLOB_HEIGHT = 28.0;
 
 static const float TIMER_MOVEMENT_RATE = 0.02;
 static const float TIMER_ENERGY_RATE = 0.02;
 
 /* Instance methods */
+
+/* 
+ @Name:
+ @Params:
+ @Return:
+ @Description:
+ 
+ */
+-(void)configureUIElements
+{
+    // Configure the slider
+    // get the current image dimensions
+    UIImage* currentImag = [self.randSlider currentThumbImage];
+    NSLog(@"%f,%f",currentImag.size.width,currentImag.size.height);
+    // set the new thumb image
+    UIImage* sliderImag = [UIImage imageNamed:@"slider.png"];
+    [self.randSlider setThumbImage:sliderImag forState:UIControlStateNormal];
+    // set the new track tint colours
+    [self.randSlider setMinimumTrackTintColor:[UIColor redColor]];
+    
+}
+
 
 /* 
  @Name: initializeGame
@@ -75,13 +97,29 @@ static const float TIMER_ENERGY_RATE = 0.02;
 // Game won method
 -(void)wonGame
 {
+    // Increment the score
+    self.appData.score = self.appData.score + 1;
+    // Update total energy, number of games played
+    self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
+    self.appData.noOfPlays = self.appData.noOfPlays + 1;
+    // Calculate average energy
+    [self calculateAvgEnergy];
     
+    // Initialize the game
+    [self initializeGame];
 }
 
 // Game lost method
 -(void)lostGame
 {
+    // Update total energy, number of games played
+    self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
+    self.appData.noOfPlays = self.appData.noOfPlays + 1;
+    // Calculate average energy
+    [self calculateAvgEnergy];
     
+    // Initialize the game
+    [self initializeGame];
 }
 
 // Slider actions
@@ -109,6 +147,7 @@ static const float TIMER_ENERGY_RATE = 0.02;
     // Determine if the pause button is in its initial/reset state ("Start")
     if([self.pauseBtn.currentTitle compare:@"START"] == NSOrderedSame)
     {
+        // -- Pause button in "START" state
         // Set the flag - Game is running
         self.gameRunning = YES;
         
@@ -119,13 +158,16 @@ static const float TIMER_ENERGY_RATE = 0.02;
         [self.pauseBtn setTitle:@"PAUSE" forState:UIControlStateNormal];
     }
     else
-    {   // Pause button NOT in "Start" state
+    {   // -- Pause button NOT in "START" state
         // Determine what is the status of the pause button ("Pause" or "Resume")
         if([self.pauseBtn.currentTitle compare:@"PAUSE"] == NSOrderedSame)
         {
-            // Pause button in "PAUSE" state
+            // -- Pause button in "PAUSE" state
             // Freeze the timer
             [self stopMovementTimer];
+            
+            // Reset the flag - Game is not running
+            self.gameRunning = NO;
             
             // Set the button's title to "RESUME"
             [self.pauseBtn setTitle:@"RESUME" forState:UIControlStateNormal];
@@ -135,6 +177,9 @@ static const float TIMER_ENERGY_RATE = 0.02;
             // Pause button in "RESUME" state
             // Restart the timer
             [self startMovementTimer];
+            
+            // Set the flag - Game is running
+            self.gameRunning = YES;
             
             // Set the button's title to "PAUSE"
             [self.pauseBtn setTitle:@"PAUSE" forState:UIControlStateNormal];
@@ -193,76 +238,56 @@ static const float TIMER_ENERGY_RATE = 0.02;
     
     // Calculate the new x and new y
     // determine the new random behaviour on x-axis (rand in [-50.0,50.0])
-    float rand = (arc4random() % 101) - 50.0;
+    float rand = (arc4random() % 41) - 20.0;
     // determine new x-axis velocity
-    float newXVelocity = self.appData.xVelocity * DECAY + self.appData.acceleration + self.appData.randomness * rand;
+    self.appData.xVelocity = self.appData.xVelocity * DECAY + self.appData.acceleration + self.appData.randomness * rand;
+    
     // calculate new x
-    float newX = self.ball.xCoord + newXVelocity * DT;
+    float newX = self.ball.xCoord + self.appData.xVelocity * DT;
     // calculate new y
     float newY = self.ball.yCoord + Y_VELOCITY;
     
-    // Determine if the new coordinates of the ball mean ball interacts with background: walls, spikes, holes
+    // Create a new rectangle that represents the next position of the ball imageview
+    CGRect newBallRect = CGRectMake(newX-(self.ballImageView.frame.size.width/2), newY-(self.ballImageView.frame.size.height/2), self.ballImageView.frame.size.width, self.ballImageView.frame.size.height);
     
-    // create a new rectangle that represents the next position of the ball imageview
-    CGRect newBallRect = CGRectMake(newX, newY, self.ballImageView.frame.size.width, self.ballImageView.frame.size.height);
-    // verify if the potential new position of the ball would interact with walls, spikes or holes
-    
+    // Verify if the potential new position of the ball would interact with walls, spikes or goals
     // check if any of the goals is reached
     if(CGRectIntersectsRect(newBallRect, self.viewGoalLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewGoalRight.frame))
     {
         // - Ball reached one of the goals
         // GAME WON
-        // Increment the score
-        self.appData.score = self.appData.score + 1;
-        // Update total energy, number of games played
-        self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
-        self.appData.noOfPlays = self.appData.noOfPlays + 1;
-        // Calculate average energy
-        [self calculateAvgEnergy];
-        
-        // Initialize the game
-        [self initializeGame];
+        [self wonGame];
     }
     else
     {
-        // check if left wall is hit
-        if(CGRectIntersectsRect(newBallRect, self.viewWallLeft.frame))
+        // check if any of the spikes are hit
+        if(CGRectIntersectsRect(newBallRect, self.viewSpikesLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesCenter.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesRight.frame))
         {
-            // - Ball hit the left wall
-            // Ball bounces back, changing direction to the right
-            
+            // - Ball hit the spikes
+            // GAME LOST
+            [self lostGame];
         }
         else
         {
-            // check if right wall is hit
-            if(CGRectIntersectsRect(newBallRect, self.viewWallRight.frame))
+            // check if any of the walls is hit
+            if(CGRectIntersectsRect(newBallRect, self.viewWallLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewWallRight.frame)
+               ||CGRectIntersectsRect(newBallRect, self.viewGoalLeftWallLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewGoalLeftWallRight.frame)
+               ||CGRectIntersectsRect(newBallRect, self.viewGoalRightWallLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewGoalRightWallRight.frame))
             {
-                // - Ball hit the right wall
-                // Ball bounces back, changing direction to the left
-                
+                // -- Ball hit one of the walls
+                // BALL BOUNCES BACK FROM THE WALL
+                self.appData.xVelocity = -self.appData.xVelocity;
+                // calculate new x
+                newX = self.ball.xCoord + self.appData.xVelocity * DT;
             }
-            else
-            {
-                // check if any of the spikes are hit
-                if(CGRectIntersectsRect(newBallRect, self.viewSpikesLeft.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesCenter.frame)||CGRectIntersectsRect(newBallRect, self.viewSpikesRight.frame))
-                {
-                    // - Ball hit the spikes
-                    // GAME LOST
-                    
-                }
-                else
-                {
-                    // - Ball is moving in the free-movement area of the field
-                    //Just change the position of the ball
-                    self.ball.xCoord = newX;
-                    self.ball.yCoord = newY;
-                }
-            }
+            self.ball.xCoord = newX;
+            self.ball.yCoord = newY;
+
         }
     }    
 }
 
-// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call ** //TODO: delete this comment
+// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call **
 -(void)connectBallModel:(BallModel*)ball
 {
     [ball addObserver:self forKeyPath:@"xCoord" options:NSKeyValueObservingOptionNew context:nil];
@@ -328,6 +353,9 @@ static const float TIMER_ENERGY_RATE = 0.02;
             // Show the blob at the current touch point
             self.blobImageView.center = touchPoint;
             self.blobImageView.alpha = 0.8;
+            
+            // Hide the mouse cursor
+//            [NSCursor hide];
             
             // Determine the position of the touch w.r.t. the current position of the ball
             CGPoint ballCenter = CGPointMake(self.ball.xCoord, self.ball.yCoord);
@@ -417,18 +445,14 @@ static const float TIMER_ENERGY_RATE = 0.02;
     self.blobImageView = blob;
     [self.viewCenter addSubview:self.blobImageView];
     
+    // Call the UI elements configuration methods
+    [self configureUIElements];
+    
+    // Reset all the data models variables & flags
     [self resetGame];
     
     // Set the default value for the slider to be 0.0
     self.randSlider.value = self.appData.randomness;
-    
-    // Set the default value for the labels to 0
-//    self.scoreLabel.text = [NSString stringWithFormat:@"%d",self.appData.score];
-//    self.avgEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.avgEnergy];
-//    self.currEnergyLabel.text = [NSString stringWithFormat:@"%d",self.appData.currentEnergy];
-    
-    // start the timer
-//    self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:0.02 target:self selector:@selector(moveBall) userInfo:nil repeats:YES]; //TODO: remove this part of code
 }
 
 

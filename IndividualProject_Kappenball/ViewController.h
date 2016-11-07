@@ -17,11 +17,18 @@
 @property (assign) BOOL gameRunning;
 
 // Define the background image views (tiles)
+// walls
 @property (weak) IBOutlet UIView* viewWallLeft;
+@property (weak) IBOutlet UIView* viewGoalLeftWallLeft;
+@property (weak) IBOutlet UIView* viewGoalRightWallLeft;
 @property (weak) IBOutlet UIView* viewWallRight;
+@property (weak) IBOutlet UIView* viewGoalLeftWallRight;
+@property (weak) IBOutlet UIView* viewGoalRightWallRight;
+// spikes
 @property (weak) IBOutlet UIView* viewSpikesLeft;
 @property (weak) IBOutlet UIView* viewSpikesCenter;
 @property (weak) IBOutlet UIView* viewSpikesRight;
+// goals
 @property (weak) IBOutlet UIView* viewGoalLeft;
 @property (weak) IBOutlet UIView* viewGoalRight;
 
@@ -57,6 +64,9 @@
 @property (weak) IBOutlet UIButton* highscoresBtn;
 
 /* Instance methods */
+// Configure UI Elements
+-(void)configureUIElements;
+
 // Slider actions
 -(IBAction)randSliderChanged;
 
