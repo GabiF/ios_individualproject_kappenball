@@ -115,6 +115,7 @@
 
 // Ball movement method
 -(void)moveBall;
+
 // Ball start animation method
 -(void)startBallAnimation;
 // Ball stop animation method

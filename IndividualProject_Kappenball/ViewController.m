@@ -14,8 +14,6 @@
 
 @implementation ViewController
 
-/***  ***/
-
 /*** Class constants ***/
 
 // Movement constants
@@ -360,7 +358,7 @@ To be called in appDidLoad method, after all initializations
 -(void)startBallAnimation
 {
     // Set animation duration
-    [self.ballImageView setAnimationDuration:0.4];
+    [self.ballImageView setAnimationDuration:0.5];
     // Set animation no of repetitions
     [self.ballImageView setAnimationRepeatCount:1];
     // Start the animation
@@ -403,7 +401,6 @@ To be called in appDidLoad method, after all initializations
  To be added as the SELECTOR for the movementTimer
  @NOTE: Here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
  */
-
 -(void)moveBall
 {
     // Calculate the new x and new y
@@ -650,9 +647,6 @@ To be called in appDidLoad method, after all initializations
             self.blobImageView.center = touchPoint;
             self.blobImageView.alpha = 0.8;
             
-            // Hide the mouse cursor
-//            [NSCursor hide];
-            
             // Determine the position of the touch w.r.t. the current position of the ball
             CGPoint ballCenter = CGPointMake(self.ball.xCoord, self.ball.yCoord);
             
@@ -691,6 +685,20 @@ To be called in appDidLoad method, after all initializations
             CGPoint touchPoint = [touch locationInView:self.viewCenter];
             // Move the position of the blob to the current touch point
             self.blobImageView.center = touchPoint;
+            
+            // Determine the position of the touch w.r.t. the current position of the ball
+            CGPoint ballCenter = CGPointMake(self.ball.xCoord, self.ball.yCoord);
+            
+            if(touchPoint.x < ballCenter.x)
+            {
+                // The touch was on the LHS of the ball
+                self.appData.acceleration = X_ACCELERATION;
+            }
+            else
+            {
+                // The touch was on the RHS of the ball
+                self.appData.acceleration = -X_ACCELERATION;
+            }
         }
     }
 }
