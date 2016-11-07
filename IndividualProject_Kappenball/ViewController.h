@@ -84,10 +84,10 @@
 // Initialization method
 -(void)initializeGame;
 
-// Reset method
+// Game reset method
 -(void)resetGame;
 
-// Start game method
+// Game start method
 -(void)startGame;
 
 // Game won method

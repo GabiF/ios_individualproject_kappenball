@@ -35,20 +35,27 @@ static const float TIMER_ENERGY_RATE = 0.02;
  @Description:
  
  */
+
+/*
+ @Name: configureUIElements
+ @Params:
+ @Return: void
+ @Description: UI elements configuration method.
+               To be called in appDidLoad method, after all initializations
+ 
+ */
 -(void)configureUIElements
 {
     // Configure the slider
-    // get the current image dimensions
-    UIImage* currentImag = [self.randSlider currentThumbImage];
-    NSLog(@"%f,%f",currentImag.size.width,currentImag.size.height);
     // set the new thumb image
     UIImage* sliderImag = [UIImage imageNamed:@"slider.png"];
     [self.randSlider setThumbImage:sliderImag forState:UIControlStateNormal];
     // set the new track tint colours
     [self.randSlider setMinimumTrackTintColor:[UIColor redColor]];
+    // set the default value for the slider to be 0.0
+    self.randSlider.value = self.appData.randomness;
     
 }
-
 
 /* 
  @Name: initializeGame
@@ -88,11 +95,20 @@ static const float TIMER_ENERGY_RATE = 0.02;
     self.appData.avgEnergy = 0;
 }
 
+/*
+ @Name: startGame
+ @Params:
+ @Return: void
+ @Description: Start game method.
+               To be called each time the game is started (START button pressed)
+ */
 // Start game method
 -(void)startGame
 {
     [self startMovementTimer];
 }
+
+//TODO: methods documentation
 
 // Game won method
 -(void)wonGame
@@ -122,14 +138,15 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self initializeGame];
 }
 
-// Slider actions
+/* Slider actions */
 -(IBAction)randSliderChanged
 {
     // Get the value of the slider and store it in the appData randomness variable
     self.appData.randomness = self.randSlider.value;
 }
 
-// Buttons actions
+/* Buttons actions */
+// RESET button pressed method
 -(IBAction)resetBtnPressed
 {
     // Stop the movement timer
@@ -142,6 +159,7 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self.pauseBtn setTitle:@"START" forState:UIControlStateNormal];
 }
 
+// START/PAUSE/RESUME button pressed method
 -(IBAction)pauseBtnPressed
 {
     // Determine if the pause button is in its initial/reset state ("Start")
@@ -187,10 +205,11 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-// GABI: method to be implemented
+// HIGHSCORES button pressed method
 -(IBAction)highscoresBtnPressed
 {
     // empty
+    //TODO: to be implemented
 }
 
 // Timer methods (could be reduced to just two generic methods)
@@ -222,16 +241,19 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self.energyTimer invalidate];
 }
 
+// Energy timer selector
 -(void)incrementEnergy
 {
     self.appData.currentEnergy = self.appData.currentEnergy + 1;
 }
 
+// Average energy calculation method
 -(void)calculateAvgEnergy
 {
     self.appData.avgEnergy = self.appData.totalEnergy / self.appData.noOfPlays;
 }
 
+// Ball movement (x and y coordinates) calculation, verification and update method
 -(void)moveBall
 {
     // NOTE: So here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
@@ -287,13 +309,15 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }    
 }
 
-// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call **
+// Ball model observer creation method
+// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call the observer method **
 -(void)connectBallModel:(BallModel*)ball
 {
     [ball addObserver:self forKeyPath:@"xCoord" options:NSKeyValueObservingOptionNew context:nil];
     [ball addObserver:self forKeyPath:@"yCoord" options:NSKeyValueObservingOptionNew context:nil];
 }
 
+// App model observer creation method
 -(void)connectAppDataModel:(AppDataModel*)appData
 {
     [appData addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:nil];
@@ -301,17 +325,11 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [appData addObserver:self forKeyPath:@"currentEnergy" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-// ** this method is called automatically
+// ViewController observer method
+// NOTE: ** this method is called automatically
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-    // NOTE: and here is where I do the visual updates on the view
-    // it's like a communication:
-    /*
-     C -> M: make this changes
-     M: making the changes
-     M -> C: I made the changes, you have to do your thing cause things changed in my fields
-     C: ok, doing the visual changes
-     */ //TODO: delete these comments
+    // NOTE: here is where I must do the visual updates on the view
     
     // Check if one of the values in the ball model has changed
     if(([keyPath compare:@"xCoord"] == NSOrderedSame) || ([keyPath compare:@"yCoord"] == NSOrderedSame))
@@ -339,6 +357,8 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
+/* Methods that deal with screen touches */
+// Touches began
 -(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
 {
     // Interpret the touches only if the game is running
@@ -377,6 +397,7 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
+// Screen touches moved position
 -(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // Interpret the touches only if the game is running
@@ -393,6 +414,7 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
+// Screen touches ended
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // Interpret the touches only if the game is running
@@ -409,7 +431,16 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
+//Screen touches cancelled
+-(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    // empty
+    //TODO: to be implemented
+}
+
 /* Predefined methods (editable) */
+
+// NOTE: View (owned by current view controller) loaded
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -450,9 +481,6 @@ static const float TIMER_ENERGY_RATE = 0.02;
     
     // Reset all the data models variables & flags
     [self resetGame];
-    
-    // Set the default value for the slider to be 0.0
-    self.randSlider.value = self.appData.randomness;
 }
 
 
@@ -462,7 +490,7 @@ static const float TIMER_ENERGY_RATE = 0.02;
 
 }
 
-// Override the method to set the preferred orientation style to landscape.
+// Method override meant to set the preferred orientation style to landscape.
 -(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
     // This will make the application run by default in landscape mode
