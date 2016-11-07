@@ -25,6 +25,7 @@ static const float BLOB_HEIGHT = 28.0;
 
 static const float TIMER_MOVEMENT_RATE = 0.02;
 static const float TIMER_ENERGY_RATE = 0.02;
+static const float TIMER_ANIMATION_RATE = 0.02;
 
 /* Instance methods */
 
@@ -36,10 +37,12 @@ static const float TIMER_ENERGY_RATE = 0.02;
  
  */
 
+/** User Interface - related methods **/
+
 /*
  @Name: configureUIElements
  @Params:
- @Return: void
+ @Return:
  @Description: UI elements configuration method.
                To be called in appDidLoad method, after all initializations
  
@@ -54,91 +57,30 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self.randSlider setMinimumTrackTintColor:[UIColor redColor]];
     // set the default value for the slider to be 0.0
     self.randSlider.value = self.appData.randomness;
-    
-}
-
-/* 
- @Name: initializeGame
- @Params:
- @Return: void
- @Description: Initialization method. 
-               To be called each time the ball hits a spike / you score a goal
- */
--(void)initializeGame
-{
-    // Initialize the ball model
-    self.ball.xCoord = self.viewCenter.frame.size.width / 2.0;
-    self.ball.yCoord = 0.0;
-    
-    // Initialize the appData model
-    self.appData.currentEnergy = 0;
-    self.appData.xVelocity = 0.0;
-    self.appData.acceleration = 0.0;
 }
 
 /*
- @Name: resetGame
+ @Name: preferredInterfaceOrientationForPresentation
  @Params:
- @Return: void
- @Description: Reset game method. 
-               To be called each time the game is reset (RESET button pressed)
+ @Return: UIInterfaceOrientation enum value
+ @Description: Method override meant to set the preferred orientation style to landscape.
+ To be called in appDidLoad method, before all initializations
  */
--(void)resetGame
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
 {
-    // Reset the flag - Game is not running
-    self.gameRunning = NO;
-    
-    [self initializeGame];
-    self.appData.totalEnergy = 0;
-    self.appData.noOfPlays = 0;
-    self.appData.score = 0;
-    self.appData.avgEnergy = 0;
-}
-
-/*
- @Name: startGame
- @Params:
- @Return: void
- @Description: Start game method.
-               To be called each time the game is started (START button pressed)
- */
-// Start game method
--(void)startGame
-{
-    [self startMovementTimer];
-}
-
-//TODO: methods documentation
-
-// Game won method
--(void)wonGame
-{
-    // Increment the score
-    self.appData.score = self.appData.score + 1;
-    // Update total energy, number of games played
-    self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
-    self.appData.noOfPlays = self.appData.noOfPlays + 1;
-    // Calculate average energy
-    [self calculateAvgEnergy];
-    
-    // Initialize the game
-    [self initializeGame];
-}
-
-// Game lost method
--(void)lostGame
-{
-    // Update total energy, number of games played
-    self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
-    self.appData.noOfPlays = self.appData.noOfPlays + 1;
-    // Calculate average energy
-    [self calculateAvgEnergy];
-    
-    // Initialize the game
-    [self initializeGame];
+    // This will make the application run by default in landscape mode
+    return UIInterfaceOrientationLandscapeLeft;
 }
 
 /* Slider actions */
+
+/*
+ @Name: randSliderChanged
+ @Params:
+ @Return:
+ @Description: RANDOMNESS slider changed method.
+ To be set as the sliderChanged ACTION of the randomness slider
+ */
 -(IBAction)randSliderChanged
 {
     // Get the value of the slider and store it in the appData randomness variable
@@ -146,7 +88,14 @@ static const float TIMER_ENERGY_RATE = 0.02;
 }
 
 /* Buttons actions */
-// RESET button pressed method
+
+/*
+ @Name: resetBtnPressed
+ @Params:
+ @Return:
+ @Description: RESET button pressed method.
+ To be set as the buttonPressed ACTION of the reset button
+ */
 -(IBAction)resetBtnPressed
 {
     // Stop the movement timer
@@ -159,7 +108,13 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self.pauseBtn setTitle:@"START" forState:UIControlStateNormal];
 }
 
-// START/PAUSE/RESUME button pressed method
+/*
+ @Name: pauseBtnPressed
+ @Params:
+ @Return:
+ @Description: START/PAUSE/RESUME button pressed method
+ To be set as the buttonPressed ACTION of the start/pause/resume button.
+ */
 -(IBAction)pauseBtnPressed
 {
     // Determine if the pause button is in its initial/reset state ("Start")
@@ -205,59 +160,172 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-// HIGHSCORES button pressed method
+/*
+ @Name: highscoresBtnPressed
+ @Params:
+ @Return:
+ @Description: HIGHSCORES button pressed method
+ To be set as the buttonPressed ACTION of the highscores button.
+ */
 -(IBAction)highscoresBtnPressed
 {
     // empty
     //TODO: to be implemented
 }
 
-// Timer methods (could be reduced to just two generic methods)
-// GABI: method could be improved
--(void)startMovementTimer
+/** Game functionality methods **/
+
+/* Initialization methods */
+
+/*
+ @Name: initializeGame
+ @Params:
+ @Return:
+ @Description: Initialization method.
+ To be called each time the ball hits a spike / you score a goal
+ */
+-(void)initializeGame
 {
-    if(!(self.movementTimer.isValid))
+    // Initialize the ball model
+    self.ball.xCoord = self.viewCenter.frame.size.width / 2.0;
+    self.ball.yCoord = 0.0;
+    
+    // Initialize the appData model
+    self.appData.currentEnergy = 0;
+    self.appData.xVelocity = 0.0;
+    self.appData.acceleration = 0.0;
+}
+
+/*
+ @Name: resetGame
+ @Params:
+ @Return:
+ @Description: Reset game method.
+ To be called each time the game is reset (RESET button pressed)
+ */
+-(void)resetGame
+{
+    // Reset the flag - Game is not running
+    self.gameRunning = NO;
+    
+    [self initializeGame];
+    self.appData.totalEnergy = 0;
+    self.appData.noOfPlays = 0;
+    self.appData.score = 0;
+    self.appData.avgEnergy = 0;
+}
+
+/* Game outcomes methods */
+
+/*
+ @Name: startGame
+ @Params:
+ @Return:
+ @Description: Start game method.
+ To be called each time the game is started (START button pressed)
+ */
+// Start game method
+-(void)startGame
+{
+    [self startMovementTimer];
+}
+
+/*
+ @Name: wonGame
+ @Params:
+ @Return:
+ @Description: Game won method.
+ To be called when the ball touches the bottom of a goal
+ */
+-(void)wonGame
+{
+    // Increment the score
+    self.appData.score = self.appData.score + 1;
+    
+    // Calculate average energy
+    [self calculateAvgEnergy];
+    
+    // Initialize the game
+    [self initializeGame];
+}
+
+/*
+ @Name: lostGame
+ @Params:
+ @Return:
+ @Description: Game lost method.
+ To be called when the ball hits a region with spikes
+ */
+-(void)lostGame
+{
+    // Calculate average energy
+    [self calculateAvgEnergy];
+    
+    // Invalidate the ball movement timer
+    [self stopMovementTimer];
+    
+    // Start ball animation
+    [self startBallAnimation];
+}
+
+/* Ball-related methods */
+
+/*
+ @Name: startBallAnimation
+ @Params:
+ @Return:
+ @Description: Start ball animation method.
+ To be called at the end of the lostGame method
+ */
+-(void)startBallAnimation
+{
+    // Set animation duration
+    [self.ballImageView setAnimationDuration:0.8];
+    // Set animation no of repetitions
+    [self.ballImageView setAnimationRepeatCount:1];
+    // Start the animation
+    [self.ballImageView startAnimating];
+    
+    // Create an animation timer to check whether the animation has stopped
+    [self startAnimationTimer];
+}
+
+/*
+ @Name: stopBallAnimation
+ @Params:
+ @Return:
+ @Description: Stop ball animation method.
+ To be added as the SELECTOR for the animationTimer
+ */
+-(void)stopBallAnimation
+{
+    // Check if ball animation stopped
+    if(![self.ballImageView isAnimating])
     {
-        self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_MOVEMENT_RATE target:self selector:@selector(moveBall) userInfo:nil repeats:YES];
+        // -- Ball animation stopped
+        // Stop animation timer
+        [self stopAnimationTimer];
+        
+        // Start movement timer
+        [self startMovementTimer];
+        
+        // Initialize the game
+        [self initializeGame];
     }
-}
-// GABI: method could be improved
--(void)stopMovementTimer
-{
-    [self.movementTimer invalidate];
+    
 }
 
-// GABI: method could be improved
--(void)startEnergyTimer
-{
-    if(!(self.energyTimer.isValid))
-    {
-        self.energyTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_ENERGY_RATE target:self selector:@selector(incrementEnergy) userInfo:nil repeats:YES];
-    }
-}
-// GABI: method could be improved
--(void)stopEnergyTimer
-{
-    [self.energyTimer invalidate];
-}
+/*
+ @Name: moveBall
+ @Params:
+ @Return:
+ @Description: Ball movement (x and y coordinates) calculation, verification and update method.
+ To be added as the SELECTOR for the movementTimer
+ @NOTE: Here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
+ */
 
-// Energy timer selector
--(void)incrementEnergy
-{
-    self.appData.currentEnergy = self.appData.currentEnergy + 1;
-}
-
-// Average energy calculation method
--(void)calculateAvgEnergy
-{
-    self.appData.avgEnergy = self.appData.totalEnergy / self.appData.noOfPlays;
-}
-
-// Ball movement (x and y coordinates) calculation, verification and update method
 -(void)moveBall
 {
-    // NOTE: So here I only calculate (and verify) the new values and update the model, which will possibly fire the observeValueForKeyPath method
-    
     // Calculate the new x and new y
     // determine the new random behaviour on x-axis (rand in [-50.0,50.0])
     float rand = (arc4random() % 41) - 20.0;
@@ -304,20 +372,110 @@ static const float TIMER_ENERGY_RATE = 0.02;
             }
             self.ball.xCoord = newX;
             self.ball.yCoord = newY;
-
+            
         }
     }    
 }
 
-// Ball model observer creation method
-// NOTE: so this is the method that says "Look at x and y and see if they change". if they do, call the observer method **
+/** Timer methods  **/
+// NOTE: could be reduced to just two generic methods
+
+//TODO: method could be improved
+-(void)startMovementTimer
+{
+    if(!(self.movementTimer.isValid))
+    {
+        self.movementTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_MOVEMENT_RATE target:self selector:@selector(moveBall) userInfo:nil repeats:YES];
+    }
+}
+//TODO: method could be improved
+-(void)stopMovementTimer
+{
+    [self.movementTimer invalidate];
+}
+
+//TODO: method could be improved
+-(void)startEnergyTimer
+{
+    if(!(self.energyTimer.isValid))
+    {
+        self.energyTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_ENERGY_RATE target:self selector:@selector(incrementEnergy) userInfo:nil repeats:YES];
+    }
+}
+//TODO: method could be improved
+-(void)stopEnergyTimer
+{
+    [self.energyTimer invalidate];
+}
+//TODO: method could be improved
+-(void)startAnimationTimer
+{
+    if(!(self.animationTimer.isValid))
+    {
+        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:TIMER_ANIMATION_RATE target:self selector:@selector(stopBallAnimation) userInfo:nil repeats:YES];
+    }
+}
+//TODO: method could be improved
+-(void)stopAnimationTimer
+{
+    [self.animationTimer invalidate];
+}
+
+/** APPLICATION DATA MODEL methods **/
+
+/*
+ @Name: incrementEnergy
+ @Params:
+ @Return:
+ @Description: Increment energy method.
+ To be set as the SELECTOR for the energyTimer
+ */
+-(void)incrementEnergy
+{
+    self.appData.currentEnergy = self.appData.currentEnergy + 1;
+}
+
+/*
+ @Name: calculateAvgEnergy
+ @Params:
+ @Return:
+ @Description: Average energy calculation method.
+ To be called in wonGame and lostGame methods
+ */
+-(void)calculateAvgEnergy
+{
+    // Update total energy, number of games played
+    self.appData.totalEnergy = self.appData.totalEnergy + self.appData.currentEnergy;
+    self.appData.noOfPlays = self.appData.noOfPlays + 1;
+    // Calculate average energy based on total energy and no. of games played
+    self.appData.avgEnergy = self.appData.totalEnergy / self.appData.noOfPlays;
+}
+
+/** Data models observer methods **/
+
+/* Observer creation methods */
+// NOTE: These are the methods that say "Look at these data model variables and see if they change". If they do, call the observer method.
+
+/*
+ @Name: connectBallModel
+ @Params: (BallModel*)ball
+ @Return:
+ @Description: Ball model observer creation method.
+ To be called in viewDidLoad method of this ViewController
+ */
 -(void)connectBallModel:(BallModel*)ball
 {
     [ball addObserver:self forKeyPath:@"xCoord" options:NSKeyValueObservingOptionNew context:nil];
     [ball addObserver:self forKeyPath:@"yCoord" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-// App model observer creation method
+/*
+ @Name: connectAppDataModel
+ @Params: (AppDataModel*)appData
+ @Return:
+ @Description: App model observer creation method.
+ To be called in viewDidLoad method of this ViewController
+ */
 -(void)connectAppDataModel:(AppDataModel*)appData
 {
     [appData addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew context:nil];
@@ -325,8 +483,15 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [appData addObserver:self forKeyPath:@"currentEnergy" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-// ViewController observer method
-// NOTE: ** this method is called automatically
+/* ViewController observer method */
+
+/*
+ @Name: observeValueForKeyPath
+ @Params: default ones
+ @Return:
+ @Description: ViewController observer method.
+ This method is called AUTOMATICALLY when one of the watched variables changes its value.
+ */
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
     // NOTE: here is where I must do the visual updates on the view
@@ -357,8 +522,14 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-/* Methods that deal with screen touches */
-// Touches began
+/** Methods that deal with screen touches **/
+
+/*
+ @Name: touchesBegan
+ @Params: default ones
+ @Return:
+ @Description:
+ */
 -(void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
 {
     // Interpret the touches only if the game is running
@@ -397,7 +568,12 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-// Screen touches moved position
+/*
+ @Name: touchesMoved
+ @Params: default ones
+ @Return:
+ @Description:
+ */
 -(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // Interpret the touches only if the game is running
@@ -414,7 +590,12 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-// Screen touches ended
+/*
+ @Name: touchesEnded
+ @Params: default ones
+ @Return:
+ @Description:
+ */
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // Interpret the touches only if the game is running
@@ -431,20 +612,35 @@ static const float TIMER_ENERGY_RATE = 0.02;
     }
 }
 
-//Screen touches cancelled
+/*
+ @Name: touchesCancelled
+ @Params: default ones
+ @Return:
+ @Description:
+ */
 -(void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     // empty
     //TODO: to be implemented
 }
 
-/* Predefined methods (editable) */
+/** Predefined methods **/
+// NOTE: methods are editable
 
-// NOTE: View (owned by current view controller) loaded
-- (void)viewDidLoad {
+/*
+ @Name: viewDidLoad
+ @Params:
+ @Return:
+ @Description: View (owned by current view controller) loaded
+ This method is called AUTOMATICALLY when the current ViewController loaded.
+ */
+-(void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    [self preferredInterfaceOrientationForPresentation];
     
+    // Create the ball and appData models and connect the observer with the variables to be watched
     self.ball = [[BallModel alloc]initWithX:(self.viewCenter.frame.size.width / 2.0) Y:0.0];
     [self connectBallModel:self.ball];
     self.appData = [[AppDataModel alloc]init];
@@ -460,8 +656,14 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self.viewCenter addSubview:self.backgroundImageView];
     
     // Create the ball imageview
-    UIImage* ballImag = [UIImage imageNamed:@"ball.png"];
-    UIImageView* ball = [[UIImageView alloc]initWithImage:ballImag];
+    NSMutableArray* ballImages = [[NSMutableArray alloc]init];
+    for(int i=2; i<=5; i++)
+    {
+        UIImage* ballImag = [UIImage imageNamed:[NSString stringWithFormat:@"ball%d.png",i]];
+        [ballImages addObject:ballImag];
+    }
+    UIImageView* ball = [[UIImageView alloc]initWithImage:[ballImages objectAtIndex:0]];
+    [ball setAnimationImages:ballImages];
     // Set the ballImageView of the viewcontroller to be the above one and add it to the view
     self.ballImageView = ball;
     [self.viewCenter addSubview:self.ballImageView];
@@ -483,18 +685,17 @@ static const float TIMER_ENERGY_RATE = 0.02;
     [self resetGame];
 }
 
-
+/*
+ @Name: didReceiveMemoryWarning
+ @Params:
+ @Return:
+ @Description:
+ This method is called AUTOMATICALLY when the application received a memory warning.
+ */
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 
-}
-
-// Method override meant to set the preferred orientation style to landscape.
--(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
-{
-    // This will make the application run by default in landscape mode
-    return UIInterfaceOrientationLandscapeLeft;
 }
 
 @end

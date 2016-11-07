@@ -35,6 +35,7 @@
 // Define the timer objects
 @property (strong) NSTimer* movementTimer;
 @property (strong) NSTimer* energyTimer;
+@property (strong) NSTimer* animationTimer;
 
 // Define the model objects
 @property (strong) BallModel* ball;
@@ -80,30 +81,32 @@
 -(void)stopMovementTimer;
 -(void)startEnergyTimer;
 -(void)stopEnergyTimer;
+-(void)startAnimationTimer;
+-(void)stopAnimationTimer;
 
 // Initialization method
 -(void)initializeGame;
 
 // Game reset method
 -(void)resetGame;
-
 // Game start method
 -(void)startGame;
-
 // Game won method
 -(void)wonGame;
-
 // Game lost method
 -(void)lostGame;
 
 // Increment energy
 -(void)incrementEnergy;
-
 // Calculate average energy method
 -(void)calculateAvgEnergy;
 
 // Ball movement method
 -(void)moveBall;
+// Ball start animation method
+-(void)startBallAnimation;
+// Ball stop animation method
+-(void)stopBallAnimation;
 
 @end
 

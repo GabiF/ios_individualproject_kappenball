@@ -7,13 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A03607671DCE7FAB000FC206 /* ball.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607651DCE7FAB000FC206 /* ball.png */; };
+		A03607671DCE7FAB000FC206 /* ball1.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607651DCE7FAB000FC206 /* ball1.png */; };
 		A03607681DCE7FAB000FC206 /* field.png in Resources */ = {isa = PBXBuildFile; fileRef = A03607661DCE7FAB000FC206 /* field.png */; };
 		A036076B1DCE8232000FC206 /* BallModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076A1DCE8232000FC206 /* BallModel.m */; };
 		A036076E1DCE8414000FC206 /* AppDataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = A036076D1DCE8414000FC206 /* AppDataModel.m */; };
 		A06A15271DD034E2000C61E5 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A15261DD034E2000C61E5 /* button.png */; };
 		A06A15291DD0360A000C61E5 /* button2.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A15281DD0360A000C61E5 /* button2.png */; };
 		A06A15311DD0466D000C61E5 /* slider.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A15301DD0466D000C61E5 /* slider.png */; };
+		A06A153E1DD0634D000C61E5 /* ball2.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A153A1DD0634D000C61E5 /* ball2.png */; };
+		A06A153F1DD0634D000C61E5 /* ball3.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A153B1DD0634D000C61E5 /* ball3.png */; };
+		A06A15401DD0634D000C61E5 /* ball4.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A153C1DD0634D000C61E5 /* ball4.png */; };
+		A06A15411DD0634D000C61E5 /* ball5.png in Resources */ = {isa = PBXBuildFile; fileRef = A06A153D1DD0634D000C61E5 /* ball5.png */; };
 		A076D5C81DCEF31500FC02E1 /* blob.png in Resources */ = {isa = PBXBuildFile; fileRef = A076D5C71DCEF31500FC02E1 /* blob.png */; };
 		E37C97C11DCDA2BD00C50060 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C01DCDA2BD00C50060 /* main.m */; };
 		E37C97C41DCDA2BD00C50060 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E37C97C31DCDA2BD00C50060 /* AppDelegate.m */; };
@@ -42,7 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A03607651DCE7FAB000FC206 /* ball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball.png; path = "Supporting Files/ball.png"; sourceTree = "<group>"; };
+		A03607651DCE7FAB000FC206 /* ball1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball1.png; path = "Supporting Files/ball1.png"; sourceTree = "<group>"; };
 		A03607661DCE7FAB000FC206 /* field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = field.png; path = "Supporting Files/field.png"; sourceTree = "<group>"; };
 		A03607691DCE8232000FC206 /* BallModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BallModel.h; sourceTree = "<group>"; };
 		A036076A1DCE8232000FC206 /* BallModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BallModel.m; sourceTree = "<group>"; };
@@ -51,6 +55,10 @@
 		A06A15261DD034E2000C61E5 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = "Supporting Files/button.png"; sourceTree = "<group>"; };
 		A06A15281DD0360A000C61E5 /* button2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button2.png; path = "Supporting Files/button2.png"; sourceTree = "<group>"; };
 		A06A15301DD0466D000C61E5 /* slider.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = slider.png; path = "Supporting Files/slider.png"; sourceTree = "<group>"; };
+		A06A153A1DD0634D000C61E5 /* ball2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball2.png; path = "Supporting Files/ball2.png"; sourceTree = "<group>"; };
+		A06A153B1DD0634D000C61E5 /* ball3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball3.png; path = "Supporting Files/ball3.png"; sourceTree = "<group>"; };
+		A06A153C1DD0634D000C61E5 /* ball4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball4.png; path = "Supporting Files/ball4.png"; sourceTree = "<group>"; };
+		A06A153D1DD0634D000C61E5 /* ball5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ball5.png; path = "Supporting Files/ball5.png"; sourceTree = "<group>"; };
 		A076D5C71DCEF31500FC02E1 /* blob.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blob.png; path = "Supporting Files/blob.png"; sourceTree = "<group>"; };
 		E37C97BC1DCDA2BD00C50060 /* IndividualProject_Kappenball.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IndividualProject_Kappenball.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E37C97C01DCDA2BD00C50060 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -140,7 +148,11 @@
 				A06A15261DD034E2000C61E5 /* button.png */,
 				A06A15281DD0360A000C61E5 /* button2.png */,
 				A076D5C71DCEF31500FC02E1 /* blob.png */,
-				A03607651DCE7FAB000FC206 /* ball.png */,
+				A03607651DCE7FAB000FC206 /* ball1.png */,
+				A06A153A1DD0634D000C61E5 /* ball2.png */,
+				A06A153B1DD0634D000C61E5 /* ball3.png */,
+				A06A153C1DD0634D000C61E5 /* ball4.png */,
+				A06A153D1DD0634D000C61E5 /* ball5.png */,
 				A03607661DCE7FAB000FC206 /* field.png */,
 				E37C97C01DCDA2BD00C50060 /* main.m */,
 			);
@@ -268,12 +280,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A06A15411DD0634D000C61E5 /* ball5.png in Resources */,
+				A06A153E1DD0634D000C61E5 /* ball2.png in Resources */,
 				A06A15311DD0466D000C61E5 /* slider.png in Resources */,
+				A06A153F1DD0634D000C61E5 /* ball3.png in Resources */,
+				A06A15401DD0634D000C61E5 /* ball4.png in Resources */,
 				A03607681DCE7FAB000FC206 /* field.png in Resources */,
 				A06A15271DD034E2000C61E5 /* button.png in Resources */,
 				A076D5C81DCEF31500FC02E1 /* blob.png in Resources */,
 				E37C97CC1DCDA2BD00C50060 /* Assets.xcassets in Resources */,
-				A03607671DCE7FAB000FC206 /* ball.png in Resources */,
+				A03607671DCE7FAB000FC206 /* ball1.png in Resources */,
 				E37C97CA1DCDA2BD00C50060 /* Main.storyboard in Resources */,
 				A06A15291DD0360A000C61E5 /* button2.png in Resources */,
 			);
