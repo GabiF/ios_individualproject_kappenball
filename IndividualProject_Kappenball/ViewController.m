@@ -14,28 +14,24 @@
 
 @implementation ViewController
 
-// define the movement constants
+/*** Class constants ***/
+
+// Movement constants
 static const float DT = 0.1;
 static const float DECAY = 0.95;
 static const float Y_VELOCITY = 0.75;
 static const float X_ACCELERATION = 1.3;
 
+// Blob dimensions constants
 static const float BLOB_WIDTH = 28.0;
 static const float BLOB_HEIGHT = 28.0;
 
+// Timers constants
 static const float TIMER_MOVEMENT_RATE = 0.02;
 static const float TIMER_ENERGY_RATE = 0.02;
 static const float TIMER_ANIMATION_RATE = 0.02;
 
-/* Instance methods */
-
-/* 
- @Name:
- @Params:
- @Return:
- @Description:
- 
- */
+/*** Instance methods ***/
 
 /** User Interface - related methods **/
 
@@ -44,12 +40,12 @@ static const float TIMER_ANIMATION_RATE = 0.02;
  @Params:
  @Return:
  @Description: UI elements configuration method.
-               To be called in appDidLoad method, after all initializations
- 
+To be called in appDidLoad method, after all initializations
  */
 -(void)configureUIElements
 {
     // Configure the slider
+    
     // set the new thumb image
     UIImage* sliderImag = [UIImage imageNamed:@"slider.png"];
     [self.randSlider setThumbImage:sliderImag forState:UIControlStateNormal];
@@ -57,6 +53,9 @@ static const float TIMER_ANIMATION_RATE = 0.02;
     [self.randSlider setMinimumTrackTintColor:[UIColor redColor]];
     // set the default value for the slider to be 0.0
     self.randSlider.value = self.appData.randomness;
+    
+    // Configure the switch
+    [self.gameSwitch setTintColor:[UIColor redColor]];
 }
 
 /*

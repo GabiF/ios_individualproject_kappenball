@@ -13,10 +13,22 @@
 @interface ViewController : UIViewController
 
 /* Properties */
+
 // Define a flag to check if game is running
 @property (assign) BOOL gameRunning;
 
-// Define the background image views (tiles)
+// Define the timer objects
+@property (strong) NSTimer* movementTimer;
+@property (strong) NSTimer* energyTimer;
+@property (strong) NSTimer* animationTimer;
+
+// Define the model objects
+@property (strong) BallModel* ball;
+@property (strong) AppDataModel* appData;
+
+/* Define the storyboard objects to be interacted with */
+
+// Background image views (tiles)
 // walls
 @property (weak) IBOutlet UIView* viewWallLeft;
 @property (weak) IBOutlet UIView* viewGoalLeftWallLeft;
@@ -32,39 +44,33 @@
 @property (weak) IBOutlet UIView* viewGoalLeft;
 @property (weak) IBOutlet UIView* viewGoalRight;
 
-// Define the timer objects
-@property (strong) NSTimer* movementTimer;
-@property (strong) NSTimer* energyTimer;
-@property (strong) NSTimer* animationTimer;
-
-// Define the model objects
-@property (strong) BallModel* ball;
-@property (strong) AppDataModel* appData;
-
-// Define the storyboard objects to be interacted with
-// view objects
+// Visible view objects
 @property (weak) IBOutlet UIView* viewTop;
 @property (weak) IBOutlet UIView* viewCenter;
 @property (weak) IBOutlet UIView* viewBottom;
 
-// define the blob object
-@property (strong) UIImageView* blobImageView;
-
-// imageview objects
+// Imageview objects
 @property (strong) UIImageView* backgroundImageView;
 @property (strong) UIImageView* ballImageView;
+@property (strong) UIImageView* blobImageView;
 
+// Labels
 @property (weak) IBOutlet UILabel* scoreLabel;
 @property (weak) IBOutlet UILabel* avgEnergyLabel;
 @property (weak) IBOutlet UILabel* currEnergyLabel;
 
+// Switch
+@property (weak) IBOutlet UISwitch* gameSwitch;
+
+// Slider
 @property (weak) IBOutlet UISlider* randSlider;
 
+// Buttons
 @property (weak) IBOutlet UIButton* resetBtn;
 @property (weak) IBOutlet UIButton* pauseBtn;
 @property (weak) IBOutlet UIButton* highscoresBtn;
 
-/* Instance methods */
+/*** Instance methods ***/
 // Configure UI Elements
 -(void)configureUIElements;
 
